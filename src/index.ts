@@ -40,19 +40,40 @@ app.post("/webhooks", async (req, res) => {
 
 async function handlePendingAuthorizationRequest(req: express.Request) {
     const authorizationRequestId = req.body.data[0].relationships.authorizationRequest.data.id
+    const partialApprovalAllowed = req.body.data[0].attributes.partialApprovalAllowed
+    const totalHealthcareAmount = req.body.data[0].attributes.healthCareAmounts != null ? req.body.data[0].attributes.healthCareAmounts.totalHealthcareAmount : 0
 
-    const response = await axios.post(`${UNIT_BASE_API_URL}/authorization-requests/${authorizationRequestId}/approve`, {
-            "data": {
-                "type": "approveAuthorizationRequest",
-                "attributes": {
-                }
-            }
-        }, {
+    const response = await axios.post(`${UNIT_BASE_API_URL}/authorization-requests/${authorizationRequestId}/approve`, 
+        getApproveRequestBody(partialApprovalAllowed, totalHealthcareAmount), {
             headers: {"AUTHORIZATION": `Bearer ${UNIT_API_TOKEN}`, "content-type": "application/vnd.api+json"},
         })
 
     if (response.status != 200) {
         logError(`Failed to approve authorization request with id: ${authorizationRequestId}`)
+    }
+}
+
+function getApproveRequestBody(partialApprovalAllowed: boolean, totalHealthcareAmount: number) {
+    if (partialApprovalAllowed && totalHealthcareAmount != 0) {
+        logInfo("Approving partial amount for healthcare authorization request")
+        return {
+            "data": {
+                "type": "approveAuthorizationRequest",
+                "attributes": {
+                    "amount": totalHealthcareAmount
+                }
+            }
+        }
+    }
+    else {
+        logInfo("Approving original authorization request amount")
+        return {
+            "data": {
+                "type": "approveAuthorizationRequest",
+                "attributes": {
+                }
+            }
+        }
     }
 }
 
