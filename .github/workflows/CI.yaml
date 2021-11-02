@@ -1,0 +1,18 @@
+name: CI
+on: push
+jobs:
+  track_unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run build
+      - uses: docker/build-push-action@v1
+        with:
+          tags: latest, 0.1.${{ github.run_number }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: unit-finance/unit-webhook-server/unit-webhook-server
+          target: release
+
