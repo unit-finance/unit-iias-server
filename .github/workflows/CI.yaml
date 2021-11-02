@@ -1,7 +1,7 @@
 name: CI
 on: push
 jobs:
-  track_unit:
+  release-image:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
