@@ -41,7 +41,7 @@ app.post("/webhooks", async (req, res) => {
 async function handlePendingAuthorizationRequest(req: express.Request) {
     const authorizationRequestId = req.body.data[0].relationships.authorizationRequest.data.id
     const partialApprovalAllowed = req.body.data[0].attributes.partialApprovalAllowed
-    const totalHealthcareAmount = req.body.data[0].attributes.healthCareAmounts != null ? toInteger(req.body.data[0].attributes.healthCareAmounts.totalHealthcareAmount) : 0
+    const totalHealthcareAmount = req.body.data[0].attributes.healthCareAmounts != null ? req.body.data[0].attributes.healthCareAmounts.totalHealthcareAmount : 0
 
     const response = await axios.post(`${UNIT_BASE_API_URL}/authorization-requests/${authorizationRequestId}/approve`, 
         getApproveRequestBody(partialApprovalAllowed, totalHealthcareAmount), {
