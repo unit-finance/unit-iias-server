@@ -6,3 +6,8 @@
 - `UNIT_BASE_API_URL` - Unit's API endpoint 
 - `UNIT_API_TOKEN` - Unit's API token (without the "Bearer" text)
 3. Run `npm run dev`
+
+Example:
+```
+PORT=4400 UNIT_BASE_API_URL=http://localhost:3000 UNIT_API_TOKEN=v2.public.eyJyb2xlIjoic3VwZXIi...  npm run dev
+```
