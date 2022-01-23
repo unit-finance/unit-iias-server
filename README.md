@@ -9,5 +9,5 @@
 
 Example:
 ```
-PORT=4400 UNIT_BASE_API_URL=http://localhost:3000 UNIT_API_TOKEN=v2.public.eyJyb2xlIjoic3VwZXIi...  npm run dev
+PORT=4400 UNIT_BASE_API_URL=https://api.s.unit.sh UNIT_API_TOKEN=v2.public.eyJyb2xlIjoic3VwZXIi...  npm run dev
 ```
